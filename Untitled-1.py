@@ -82,7 +82,7 @@ alpha = 1  # 信息素重要程度因子
 beta = 6  # 启发函数重要程度因子
 rho = 0.1  # 信息素的挥发速度
 Q = 1
-iter = 0
+iternum = 0
 itermax = 150
 etatable = 1.0 / (distmat + np.diag([1e10] * numcity))  # 启发函数矩阵，表示蚂蚁从城市i转移到矩阵j的期望程度
 pheromonetable = np.ones((numcity, numcity))  # 信息素矩阵
@@ -91,7 +91,7 @@ distmat = getdistmat(coordinates)  # 城市的距离矩阵
 lengthaver = np.zeros(itermax)  # 各代路径的平均长度
 lengthbest = np.zeros(itermax)  # 各代及其之前遇到的最佳路径长度
 pathbest = np.zeros((itermax, numcity))  # 各代及其之前遇到的最佳路径长度
-while iter < itermax:
+while iternum < itermax:
     # 随机产生各个蚂蚁的起点城市
     if numant <= numcity:  # 城市数比蚂蚁数多
         pathtable[:, 0] = np.random.permutation(range(0, numcity))[:numant]
@@ -127,17 +127,17 @@ while iter < itermax:
         length[i] += distmat[visiting][pathtable[i, 0]]  # 蚂蚁的路径距离包括最后一个城市和第一个城市的距离
     # print length
     # 包含所有蚂蚁的一个迭代结束后，统计本次迭代的若干统计参数
-    lengthaver[iter] = length.mean()
-    if iter == 0:
-        lengthbest[iter] = length.min()
-        pathbest[iter] = pathtable[length.argmin()].copy()
+    lengthaver[iternum] = length.mean()
+    if iternum == 0:
+        lengthbest[iternum] = length.min()
+        pathbest[iternum] = pathtable[length.argmin()].copy()
     else:
-        if length.min() > lengthbest[iter - 1]:
-            lengthbest[iter] = lengthbest[iter - 1]
-            pathbest[iter] = pathbest[iter - 1].copy()
+        if length.min() > lengthbest[iternum - 1]:
+            lengthbest[iternum] = lengthbest[iternum - 1]
+            pathbest[iternum] = pathbest[iternum - 1].copy()
         else:
-            lengthbest[iter] = length.min()
-            pathbest[iter] = pathtable[length.argmin()].copy()
+            lengthbest[iternum] = length.min()
+            pathbest[iternum] = pathtable[length.argmin()].copy()
     # 更新信息素
     changepheromonetable = np.zeros((numcity, numcity))
     for i in range(numant):
@@ -149,10 +149,10 @@ while iter < itermax:
             Q / distmat[pathtable[i, j + 1]][pathtable[i, 0]]
         )
     pheromonetable = (1 - rho) * pheromonetable + changepheromonetable
-    iter += 1  # 迭代次数指示器+1
+    iternum += 1  # 迭代次数指示器+1
     # 观察程序执行进度，该功能是非必须的
-#     if (iter-1)%20==0:
-# print iter-1
+#     if (iternum-1)%20==0:
+# print iternum-1
 # 做出平均路径长度和最优路径长度
 print("lengthbest", lengthbest)
 fig, axes = plt.subplots(nrows=2, ncols=1, figsize=(12, 10))
