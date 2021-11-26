@@ -27,3 +27,6 @@ Ant_system_optimization for tsp
 4.  新建 Pull Request
 
 
+参考资料:
+
+https://www.zhangshengrong.com/p/4yNqQMYONA/
