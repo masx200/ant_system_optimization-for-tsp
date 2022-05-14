@@ -15,9 +15,9 @@ Ant_system_optimization for tsp
 
 #### 使用说明
 
-1.  xxxx
-2.  xxxx
-3.  xxxx
+```
+python Untitled-1.py
+```
 
 #### 结果
 ```
